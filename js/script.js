@@ -38,12 +38,9 @@ const showPage = (list, page) =>{
            <span class="date">Joined ${list[i].registered.date}</span>
          </div>
        </li>`);
-      }
-      
+      }  
    }
-
 }
-
 /*
 Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
@@ -74,8 +71,33 @@ const addPagination = (list) =>{
    });
 }
 
+const addSearch = (list) =>{
+   const header = document.querySelector(".header");
+   header.insertAdjacentHTML("beforeend", `
+   <label for="search" class="student-search">
+   <input id="search" placeholder="Search by name...">
+   <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+ </label>`);
 
+ const searchInput = document.querySelector("#search");
+
+ searchInput.addEventListener("keyup", (e) =>{
+    let inputValue = e.target.value.toLowerCase();
+    const searchList = [];
+    for(let i = 0; i < list.length; i++){
+       const firstName = list[i].name.first.toLowerCase();
+       const lastName = list[i].name.last.toLowerCase();
+
+      if(firstName.includes(inputValue) || lastName.includes(inputValue)){
+         searchList.push(list[i]);
+      }
+    }
+    showPage(searchList, 1);
+    addPagination(searchList);
+ });
+}
 
 // Call functions
 showPage(data, 1);
 addPagination(data);
+addSearch(data);
