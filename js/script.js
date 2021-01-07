@@ -71,6 +71,17 @@ const addPagination = (list) =>{
    });
 }
 
+const noResults = () =>{
+   const studentList = document.querySelector(".student-list");
+   const paginationUL = document.querySelector(".link-list");
+   const paginationLI = paginationUL.querySelectorAll("li");
+   studentList.innerHTML = "<p>No Results found</p>";
+
+   for(let i = 0; i < paginationLI.length; i++){
+      paginationUL.removeChild(paginationLI[i]);
+   }
+}
+
 const addSearch = (list) =>{
    const header = document.querySelector(".header");
    header.insertAdjacentHTML("beforeend", `
@@ -80,22 +91,34 @@ const addSearch = (list) =>{
  </label>`);
 
  const searchInput = document.querySelector("#search");
+ const searchButton = searchInput.nextElementSibling;
 
- searchInput.addEventListener("keyup", (e) =>{
-    let inputValue = e.target.value.toLowerCase();
-    const searchList = [];
-    for(let i = 0; i < list.length; i++){
-       const firstName = list[i].name.first.toLowerCase();
-       const lastName = list[i].name.last.toLowerCase();
 
-      if(firstName.includes(inputValue) || lastName.includes(inputValue)){
-         searchList.push(list[i]);
-      }
-    }
-    showPage(searchList, 1);
-    addPagination(searchList);
- });
+const searchStudents = () =>{
+   let inputValue = searchInput.value.toLowerCase();
+   const searchList = [];
+   for(let i = 0; i < list.length; i++){
+      const firstName = list[i].name.first.toLowerCase();
+      const lastName = list[i].name.last.toLowerCase();
+
+     if(firstName.includes(inputValue) || lastName.includes(inputValue)){
+        searchList.push(list[i]);
+     }
+   }
+   console.log(searchList.length);
+   if(searchList.length > 0){
+      showPage(searchList, 1);
+      addPagination(searchList);
+   }
+   else{
+      noResults();
+   }
 }
+
+ searchInput.addEventListener("keyup", searchStudents);
+ searchButton.addEventListener("click", searchStudents);
+}
+
 
 // Call functions
 showPage(data, 1);
