@@ -70,18 +70,18 @@ const addPagination = (list) =>{
       showPage(list, e.target.textContent);
    });
 }
-
+//Function when there are no students found
 const noResults = () =>{
    const studentList = document.querySelector(".student-list");
    const paginationUL = document.querySelector(".link-list");
    const paginationLI = paginationUL.querySelectorAll("li");
    studentList.innerHTML = "<p>No Results found</p>";
-
+   //For loop to go through all of the existing pagination links and delete them
    for(let i = 0; i < paginationLI.length; i++){
       paginationUL.removeChild(paginationLI[i]);
    }
 }
-
+//Function so the user can search for students by their first name and last name.
 const addSearch = (list) =>{
    const header = document.querySelector(".header");
    header.insertAdjacentHTML("beforeend", `
@@ -93,32 +93,35 @@ const addSearch = (list) =>{
  const searchInput = document.querySelector("#search");
  const searchButton = searchInput.nextElementSibling;
 
-
+/**
+ * [Will search the list of students and display any students who's first or last name
+ * contains any character or combination of characters typed in the text input.]
+ */
 const searchStudents = () =>{
-   let inputValue = searchInput.value.toLowerCase();
+   const inputValue = searchInput.value.toLowerCase();
    const searchList = [];
+   //For loop to search through first and last name of students
    for(let i = 0; i < list.length; i++){
       const firstName = list[i].name.first.toLowerCase();
       const lastName = list[i].name.last.toLowerCase();
-
+     
      if(firstName.includes(inputValue) || lastName.includes(inputValue)){
         searchList.push(list[i]);
      }
    }
-   console.log(searchList.length);
+   //If there is students who's name matches the search then it will be displayed
    if(searchList.length > 0){
       showPage(searchList, 1);
       addPagination(searchList);
-   }
+   }//If there are no students who matches the search then call the no result function.
    else{
       noResults();
    }
 }
-
+//Event listeners
  searchInput.addEventListener("keyup", searchStudents);
  searchButton.addEventListener("click", searchStudents);
 }
-
 
 // Call functions
 showPage(data, 1);
