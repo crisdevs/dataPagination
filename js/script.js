@@ -102,10 +102,11 @@ const searchStudents = () =>{
    const searchList = [];
    //For loop to search through first and last name of students
    for(let i = 0; i < list.length; i++){
-      const firstName = list[i].name.first.toLowerCase();
-      const lastName = list[i].name.last.toLowerCase();
+      let fullName = list[i].name.first.toLowerCase();
+      fullName += " ";
+      fullName += list[i].name.last.toLowerCase();
      
-     if(firstName.includes(inputValue) || lastName.includes(inputValue)){
+     if(fullName.includes(inputValue)){
         searchList.push(list[i]);
      }
    }
